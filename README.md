@@ -1,4 +1,4 @@
-# Selenium Test Suite
+# Cucumber BDD Test
 
 This project demonstrates a simple Maven-based Java project using TestNG for automated testing for UI using Selenium. The goal of this project is to practice writing and executing test cases using the Selenium, TestNG framework with Maven.
 
