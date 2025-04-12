@@ -6,12 +6,12 @@
 
     <!-- Basic information about the project -->
     <groupId>com.automation</groupId>
-    <artifactId>SeleniumTestSuite</artifactId>
+    <artifactId>CucumberBDDTest</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>SeleniumTestSuite</name>
-    <description>A simple Maven project with TestNG and Selenium</description>
+    <name>CucumberBDDTest</name>
+    <description>A simple Maven project with Cucumber and Selenium</description>
 
     <!-- Project's parent pom -->
     <parent>
