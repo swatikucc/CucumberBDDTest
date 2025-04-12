@@ -1,0 +1,48 @@
+name: Maven Build and Test
+
+# Trigger the action on push and pull request events
+on:
+  push:
+    branches:
+      - main  # Trigger on push to the 'main' branch, or use 'master' if applicable
+  pull_request:
+    branches:
+      - main  # Trigger on pull requests targeting the 'main' branch
+  workflow_dispatch:  # Allow manual triggering from GitHub UI
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Use the latest Ubuntu runner
+
+    steps:
+      # Step 1: Checkout the code from the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up JDK (Java Development Kit) for Maven
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'  # Java version to match your project
+          distribution: 'adoptopenjdk'  # You can also use 'zulu' or other distributions
+
+      # Step 3: Cache Maven dependencies to speed up subsequent builds
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository  # Path to the local Maven repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}  # Cache key based on 'pom.xml'
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      # Step 4: Run Maven build and tests
+      - name: Run Maven Tests
+        run: mvn clean test  # Run the tests with Maven
+
+      # Step 5: Optional - Upload test results (if you want to analyze the test reports)
+      - name: Upload test results to GitHub
+        if: always()  # Upload regardless of the test result (pass/fail)
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: target/surefire-reports/  # Path to Maven Surefire test results
