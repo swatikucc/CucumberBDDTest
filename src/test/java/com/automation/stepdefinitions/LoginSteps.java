@@ -11,18 +11,32 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.Assert;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 
 public class LoginSteps {
 
     WebDriver driver;
 
     @Given("User is on the login page")
-    public void user_is_on_the_login_page() {
+    public void user_is_on_the_login_page() throws IOException {
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
         // Add a unique user data directory to avoid conflicts
-        String userDataDir = "/tmp/chrome-profile-" + System.currentTimeMillis();
-        options.addArguments("--user-data-dir=" + userDataDir);
+
+
+        // Create a guaranteed unique directory
+        Path userDataDir = Files.createTempDirectory("chrome-profile");
+        System.out.println("Using temp user-data-dir: " + userDataDir.toAbsolutePath());
+
+        options.addArguments("--user-data-dir=" + userDataDir.toAbsolutePath().toString());
+
+        // These flags are important in CI
+        options.addArguments("--headless=new");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
 
         driver = new ChromeDriver(options);
         driver.manage().window().maximize();
