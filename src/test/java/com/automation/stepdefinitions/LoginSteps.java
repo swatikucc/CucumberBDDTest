@@ -24,7 +24,7 @@ public class LoginSteps {
         String userDataDir = "/tmp/chrome-profile-" + System.currentTimeMillis();
         options.addArguments("--user-data-dir=" + userDataDir);
 
-        driver = new ChromeDriver();
+        driver = new ChromeDriver(options);
         driver.manage().window().maximize();
         driver.get("https://the-internet.herokuapp.com/login");
     }
