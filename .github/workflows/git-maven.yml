@@ -28,7 +28,7 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
-      run: mvn -B package --file pom.xml
+      run: mvn clean test --file pom.xml
 
       # Upload the test report as an artifact
     - name: Upload Test Report
