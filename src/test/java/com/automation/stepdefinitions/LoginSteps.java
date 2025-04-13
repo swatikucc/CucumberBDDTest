@@ -8,9 +8,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.Assert;
 
-import static org.testng.Assert.assertTrue;
 
 public class LoginSteps {
 
@@ -19,6 +19,11 @@ public class LoginSteps {
     @Given("User is on the login page")
     public void user_is_on_the_login_page() {
         WebDriverManager.chromedriver().setup();
+        ChromeOptions options = new ChromeOptions();
+        // Add a unique user data directory to avoid conflicts
+        String userDataDir = "/tmp/chrome-profile-" + System.currentTimeMillis();
+        options.addArguments("--user-data-dir=" + userDataDir);
+
         driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.get("https://the-internet.herokuapp.com/login");
@@ -43,6 +48,7 @@ public class LoginSteps {
         // Assert that the login is successful (check for logout link)
         WebElement logoutLink = driver.findElement(By.linkText("Logout"));
         Assert.assertTrue(logoutLink.isDisplayed(), "Login failed! Logout link not found.");
+        driver.quit();
     }
 
     @When("User enters invalid credentials")
